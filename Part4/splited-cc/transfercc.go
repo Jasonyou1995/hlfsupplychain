@@ -1,6 +1,10 @@
-// Author:         Jason You
-// Last modified:  March 4 2019
-// Project:        Car Components Supply Chain
+/*
+    Author:           Jason You All Rights Reserved
+    Last modified:    March 6 2019
+    Project:          Car Components Supply Chain
+
+    SPDX-License-Identifier: Apache-2.0               */
+    
 
 
 /*

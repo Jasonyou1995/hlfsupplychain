@@ -1,6 +1,8 @@
-#                 Jason You
-# Last modified:  March 4 2019
-# Project:        Car Components Supply Chain
+# Author:           Jason You
+# Last modified:    March 6 2019
+# Project:          Car Components Supply Chain
+#
+# SPDX-License-Identifier: Apache-2.0
 #
 # In this script we get enrollment certificate for organization 1 and 2
 

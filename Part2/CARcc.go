@@ -1,11 +1,15 @@
-// Author:         Jason You All Rights Reserved
-// Last modified:  March 6 2019
-// Project:        Car Components Supply Chain
-// LICENSE:        Apache 2.0
-//
-// Please save this chaincode to the proper PATH
-// where you set in your networtk
-//
+/*
+    Author:           Jason You All Rights Reserved
+    Last modified:    March 6 2019
+    Project:          Car Components Supply Chain
+
+    SPDX-License-Identifier: Apache-2.0               
+
+    Please save this chaincode in the proper PATH.
+
+    This chaincode is for demonstration only, not
+    real business usage.                            */
+
 
 
 package main

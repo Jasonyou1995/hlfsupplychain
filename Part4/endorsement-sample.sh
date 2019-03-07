@@ -1,8 +1,7 @@
 #!/bin/bash
 
-
-#                 Jason You
-# Last modified:  March 4 2019
+# Author:         Jason You
+# Last modified:  March 6 2019
 # Project:        Car Components Supply Chain
 #
 # This is only the samples for Hyperledger Fabric

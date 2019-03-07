@@ -1,8 +1,8 @@
 # Hyperledger Fabric Car Supply Chain
 
-Note: All the chaincode and configuration file provide in here are for demostration purpose. DON'T USE ANY OF THESE CODE ON YOUR REAL WORLD BUSINESS SCENARIO BEFORE SECURITY REVISING.
+Note: All the chaincode and configuration file provide in here are for demostration purpose only. DON'T USE ANY OF THESE CODE ON YOUR REAL WORLD BUSINESS SCENARIO BEFORE SECURITY REVISING.
 
-## Environment
+## Dependicies Environment
 
 * Hyperledger-Fabric = V1.1
 * node	= v8.11.1
