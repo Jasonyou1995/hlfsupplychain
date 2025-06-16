@@ -23,3 +23,13 @@ node_modules/
 
 # OS specific
 .DS_Store
+
+# AI-generated files and directories
+.cursor/
+.taskmaster/
+*.ai-generated
+.ai-cache/
+.anthropic/
+.openai/
+cursor-*.log
+taskmaster-*.log
