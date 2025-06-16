@@ -1,0 +1,371 @@
+# Enterprise Hyperledger Fabric Supply Chain Platform v2.5+
+# Production-Ready Configuration Transaction Template
+# Author: Supply Chain Platform Team
+# Last Modified: December 16, 2024
+# License: Apache-2.0
+
+---
+################################################################################
+#
+#   Organizations Section
+#   - Defines organizational identities for the network
+#   - Production-ready with proper MSP configuration
+#
+################################################################################
+
+Organizations:
+  # Orderer Organization
+  - &OrdererOrg
+    Name: OrdererOrg
+    ID: OrdererMSP
+    MSPDir: organizations/ordererOrganizations/supplychain.com/msp
+    Policies:
+      Readers:
+        Type: Signature
+        Rule: "OR('OrdererMSP.member')"
+      Writers:
+        Type: Signature
+        Rule: "OR('OrdererMSP.member')"
+      Admins:
+        Type: Signature
+        Rule: "OR('OrdererMSP.admin')"
+    OrdererEndpoints:
+      - orderer1.supplychain.com:7050
+      - orderer2.supplychain.com:7050
+      - orderer3.supplychain.com:7050
+
+  # Manufacturer Organization
+  - &ManufacturerOrg
+    Name: ManufacturerMSP
+    ID: ManufacturerMSP
+    MSPDir: organizations/peerOrganizations/manufacturer.supplychain.com/msp
+    Policies:
+      Readers:
+        Type: Signature
+        Rule: "OR('ManufacturerMSP.admin', 'ManufacturerMSP.peer', 'ManufacturerMSP.client')"
+      Writers:
+        Type: Signature
+        Rule: "OR('ManufacturerMSP.admin', 'ManufacturerMSP.client')"
+      Admins:
+        Type: Signature
+        Rule: "OR('ManufacturerMSP.admin')"
+      Endorsement:
+        Type: Signature
+        Rule: "OR('ManufacturerMSP.peer')"
+    AnchorPeers:
+      - Host: peer0.manufacturer.supplychain.com
+        Port: 7051
+
+  # Supplier Organization
+  - &SupplierOrg
+    Name: SupplierMSP
+    ID: SupplierMSP
+    MSPDir: organizations/peerOrganizations/supplier.supplychain.com/msp
+    Policies:
+      Readers:
+        Type: Signature
+        Rule: "OR('SupplierMSP.admin', 'SupplierMSP.peer', 'SupplierMSP.client')"
+      Writers:
+        Type: Signature
+        Rule: "OR('SupplierMSP.admin', 'SupplierMSP.client')"
+      Admins:
+        Type: Signature
+        Rule: "OR('SupplierMSP.admin')"
+      Endorsement:
+        Type: Signature
+        Rule: "OR('SupplierMSP.peer')"
+    AnchorPeers:
+      - Host: peer0.supplier.supplychain.com
+        Port: 7051
+
+  # Logistics Organization
+  - &LogisticsOrg
+    Name: LogisticsMSP
+    ID: LogisticsMSP
+    MSPDir: organizations/peerOrganizations/logistics.supplychain.com/msp
+    Policies:
+      Readers:
+        Type: Signature
+        Rule: "OR('LogisticsMSP.admin', 'LogisticsMSP.peer', 'LogisticsMSP.client')"
+      Writers:
+        Type: Signature
+        Rule: "OR('LogisticsMSP.admin', 'LogisticsMSP.client')"
+      Admins:
+        Type: Signature
+        Rule: "OR('LogisticsMSP.admin')"
+      Endorsement:
+        Type: Signature
+        Rule: "OR('LogisticsMSP.peer')"
+    AnchorPeers:
+      - Host: peer0.logistics.supplychain.com
+        Port: 7051
+
+  # Retailer Organization
+  - &RetailerOrg
+    Name: RetailerMSP
+    ID: RetailerMSP
+    MSPDir: organizations/peerOrganizations/retailer.supplychain.com/msp
+    Policies:
+      Readers:
+        Type: Signature
+        Rule: "OR('RetailerMSP.admin', 'RetailerMSP.peer', 'RetailerMSP.client')"
+      Writers:
+        Type: Signature
+        Rule: "OR('RetailerMSP.admin', 'RetailerMSP.client')"
+      Admins:
+        Type: Signature
+        Rule: "OR('RetailerMSP.admin')"
+      Endorsement:
+        Type: Signature
+        Rule: "OR('RetailerMSP.peer')"
+    AnchorPeers:
+      - Host: peer0.retailer.supplychain.com
+        Port: 7051
+
+  # Auditor Organization (Compliance & Oversight)
+  - &AuditorOrg
+    Name: AuditorMSP
+    ID: AuditorMSP
+    MSPDir: organizations/peerOrganizations/auditor.supplychain.com/msp
+    Policies:
+      Readers:
+        Type: Signature
+        Rule: "OR('AuditorMSP.admin', 'AuditorMSP.peer', 'AuditorMSP.client')"
+      Writers:
+        Type: Signature
+        Rule: "OR('AuditorMSP.admin', 'AuditorMSP.client')"
+      Admins:
+        Type: Signature
+        Rule: "OR('AuditorMSP.admin')"
+      Endorsement:
+        Type: Signature
+        Rule: "OR('AuditorMSP.peer')"
+    AnchorPeers:
+      - Host: peer0.auditor.supplychain.com
+        Port: 7051
+
+################################################################################
+#
+#   Capabilities Section
+#   - Defines feature compatibility requirements
+#   - Updated for Fabric v2.5+ features
+#
+################################################################################
+
+Capabilities:
+  Channel: &ChannelCapabilities
+    V2_5: true
+
+  Orderer: &OrdererCapabilities
+    V2_5: true
+
+  Application: &ApplicationCapabilities
+    V2_5: true
+
+################################################################################
+#
+#   Application Section
+#   - Defines application-level configuration
+#   - Includes chaincode lifecycle and endorsement policies
+#
+################################################################################
+
+Application: &ApplicationDefaults
+  Organizations:
+  Policies:
+    Readers:
+      Type: ImplicitMeta
+      Rule: "ANY Readers"
+    Writers:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+    Admins:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Admins"
+    LifecycleEndorsement:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Endorsement"
+    Endorsement:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Endorsement"
+  Capabilities:
+    <<: *ApplicationCapabilities
+
+################################################################################
+#
+#   Orderer Section
+#   - Defines orderer service configuration
+#   - Supports both Raft and SmartBFT consensus
+#
+################################################################################
+
+Orderer:
+  &OrdererDefaults # OrdererType: raft (production) or SmartBFT (high-security)
+  OrdererType: raft
+
+  # Raft Configuration
+  EtcdRaft:
+    Consenters:
+      - Host: orderer1.supplychain.com
+        Port: 7050
+        ClientTLSCert: organizations/ordererOrganizations/supplychain.com/orderers/orderer1.supplychain.com/tls/server.crt
+        ServerTLSCert: organizations/ordererOrganizations/supplychain.com/orderers/orderer1.supplychain.com/tls/server.crt
+      - Host: orderer2.supplychain.com
+        Port: 7050
+        ClientTLSCert: organizations/ordererOrganizations/supplychain.com/orderers/orderer2.supplychain.com/tls/server.crt
+        ServerTLSCert: organizations/ordererOrganizations/supplychain.com/orderers/orderer2.supplychain.com/tls/server.crt
+      - Host: orderer3.supplychain.com
+        Port: 7050
+        ClientTLSCert: organizations/ordererOrganizations/supplychain.com/orderers/orderer3.supplychain.com/tls/server.crt
+        ServerTLSCert: organizations/ordererOrganizations/supplychain.com/orderers/orderer3.supplychain.com/tls/server.crt
+    Options:
+      TickInterval: 500ms
+      ElectionTick: 10
+      HeartbeatTick: 1
+      MaxInflightBlocks: 5
+      SnapshotIntervalSize: 16 MB
+
+  # SmartBFT Configuration (alternative to Raft for Byzantine fault tolerance)
+  SmartBFT:
+    RequestBatchMaxCount: 100
+    RequestBatchMaxBytes: 10 MB
+    RequestBatchMaxInterval: 50ms
+    IncomingMessageBufferSize: 200
+    RequestPoolSize: 400
+    RequestForwardTimeout: 2s
+    RequestComplainTimeout: 20s
+    RequestAutoRemoveTimeout: 3m
+    ViewChangeResendInterval: 5s
+    ViewChangeTimeout: 20s
+    LeaderHeartbeatTimeout: 1m
+    LeaderHeartbeatCount: 10
+    CollectTimeout: 1s
+    SyncOnStart: true
+    SpeedUpViewChange: true
+
+  Addresses:
+    - orderer1.supplychain.com:7050
+    - orderer2.supplychain.com:7050
+    - orderer3.supplychain.com:7050
+
+  BatchTimeout: 1s
+  BatchSize:
+    MaxMessageCount: 500
+    AbsoluteMaxBytes: 10 MB
+    PreferredMaxBytes: 2 MB
+
+  Organizations:
+  Policies:
+    Readers:
+      Type: ImplicitMeta
+      Rule: "ANY Readers"
+    Writers:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+    Admins:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Admins"
+    BlockValidation:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+  Capabilities:
+    <<: *OrdererCapabilities
+
+################################################################################
+#
+#   Channel Section
+#   - Defines channel-level configuration
+#
+################################################################################
+
+Channel: &ChannelDefaults
+  Policies:
+    Readers:
+      Type: ImplicitMeta
+      Rule: "ANY Readers"
+    Writers:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+    Admins:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Admins"
+  Capabilities:
+    <<: *ChannelCapabilities
+
+################################################################################
+#
+#   Profiles Section
+#   - Defines configuration profiles for different network setups
+#
+################################################################################
+
+Profiles:
+  # Genesis profile for system channel (Raft consensus)
+  SupplyChainGenesis:
+    <<: *ChannelDefaults
+    Orderer:
+      <<: *OrdererDefaults
+      Organizations:
+        - *OrdererOrg
+      Capabilities: *OrdererCapabilities
+    Application:
+      <<: *ApplicationDefaults
+      Organizations:
+        - *ManufacturerOrg
+        - *SupplierOrg
+        - *LogisticsOrg
+        - *RetailerOrg
+        - *AuditorOrg
+      Capabilities: *ApplicationCapabilities
+
+  # Application channel profile
+  SupplyChainChannel:
+    <<: *ChannelDefaults
+    Consortium: SupplyChainConsortium
+    Application:
+      <<: *ApplicationDefaults
+      Organizations:
+        - *ManufacturerOrg
+        - *SupplierOrg
+        - *LogisticsOrg
+        - *RetailerOrg
+        - *AuditorOrg
+      Capabilities: *ApplicationCapabilities
+
+  # SmartBFT variant for high-security deployments
+  SupplyChainGenesisBFT:
+    <<: *ChannelDefaults
+    Orderer:
+      <<: *OrdererDefaults
+      OrdererType: SmartBFT
+      Organizations:
+        - *OrdererOrg
+      Capabilities: *OrdererCapabilities
+    Application:
+      <<: *ApplicationDefaults
+      Organizations:
+        - *ManufacturerOrg
+        - *SupplierOrg
+        - *LogisticsOrg
+        - *RetailerOrg
+        - *AuditorOrg
+      Capabilities: *ApplicationCapabilities
+
+  # Development/Testing profile (single orderer)
+  SupplyChainDev:
+    <<: *ChannelDefaults
+    Orderer:
+      <<: *OrdererDefaults
+      OrdererType: solo
+      Addresses:
+        - orderer.supplychain.com:7050
+      Organizations:
+        - *OrdererOrg
+      Capabilities: *OrdererCapabilities
+    Application:
+      <<: *ApplicationDefaults
+      Organizations:
+        - *ManufacturerOrg
+        - *SupplierOrg
+        - *LogisticsOrg
+      Capabilities: *ApplicationCapabilities

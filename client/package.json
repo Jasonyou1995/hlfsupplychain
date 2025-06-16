@@ -1,0 +1,59 @@
+{
+  "name": "enterprise-supply-chain-client",
+  "version": "1.0.0",
+  "description": "Enterprise Hyperledger Fabric Supply Chain Platform - Gateway Client",
+  "main": "gateway-client.js",
+  "scripts": {
+    "start": "node gateway-client.js",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "lint": "eslint *.js",
+    "lint:fix": "eslint *.js --fix",
+    "dev": "nodemon gateway-client.js"
+  },
+  "keywords": [
+    "hyperledger-fabric",
+    "blockchain",
+    "supply-chain",
+    "enterprise",
+    "gateway-api"
+  ],
+  "author": "Supply Chain Platform Team",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "fabric-network": "^2.2.20",
+    "fabric-ca-client": "^2.2.20",
+    "js-yaml": "^4.1.0",
+    "winston": "^3.11.0",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "helmet": "^7.1.0",
+    "morgan": "^1.10.0",
+    "joi": "^17.11.0",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "nodemon": "^3.0.2",
+    "eslint": "^8.56.0",
+    "eslint-config-standard": "^17.1.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^6.1.1",
+    "supertest": "^6.3.3"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/enterprise-supply-chain/hlf-supply-chain-platform.git"
+  },
+  "bugs": {
+    "url": "https://github.com/enterprise-supply-chain/hlf-supply-chain-platform/issues"
+  },
+  "homepage": "https://github.com/enterprise-supply-chain/hlf-supply-chain-platform#readme"
+} 
