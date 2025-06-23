@@ -45,7 +45,7 @@ We provide security updates for the following versions:
 | ------- | ---------- | ----------- |
 | 2.5.x   | ✅ Active  | TBD         |
 | 2.0-2.4 | ⚠️ Limited | 2025-12-31  |
-| 1.x     | ❌ No      | 2024-06-30  |
+| 1.x     | ❌ No      | 2025-06-30  |
 
 ### Compliance Framework
 
@@ -313,6 +313,6 @@ security_testing:
 
 _This security policy is reviewed quarterly and updated as needed to address emerging threats and regulatory requirements._
 
-**Last Updated**: 2024-12-16  
+**Last Updated**: 2025-12-16  
 **Next Review**: 2025-03-16  
 **Version**: 2.0

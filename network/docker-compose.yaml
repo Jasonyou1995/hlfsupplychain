@@ -1,7 +1,6 @@
 # Enterprise Hyperledger Fabric Supply Chain Platform v2.5+
-# Production-Ready Docker Compose Configuration
 # Author: Supply Chain Platform Team
-# Last Modified: December 16, 2024
+# Last Modified: December 16, 2025
 # License: Apache-2.0
 
 version: '3.8'

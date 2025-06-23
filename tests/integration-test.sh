@@ -3,7 +3,7 @@
 # Enterprise Hyperledger Fabric Supply Chain Platform v2.5+
 # Comprehensive Integration Test Suite
 # Author: Supply Chain Platform Team
-# Last Modified: December 23, 2024
+# Last Modified: June 23, 2025
 # License: Apache-2.0
 
 set -euo pipefail

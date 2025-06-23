@@ -2,7 +2,7 @@
  * Enterprise Hyperledger Fabric Supply Chain Platform v2.5+
  * Gateway API Client Example
  * Author: Supply Chain Platform Team
- * Last Modified: December 16, 2024
+ * Last Modified: December 16, 2025
  * License: Apache-2.0
  */
 

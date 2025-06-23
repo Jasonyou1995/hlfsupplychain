@@ -1,7 +1,6 @@
 # Enterprise Hyperledger Fabric Supply Chain Platform v2.5+
-# Production-Ready Configuration Transaction Template
 # Author: Supply Chain Platform Team
-# Last Modified: December 16, 2024
+# Last Modified: December 16, 2025
 # License: Apache-2.0
 
 ---
@@ -9,7 +8,6 @@
 #
 #   Organizations Section
 #   - Defines organizational identities for the network
-#   - Production-ready with proper MSP configuration
 #
 ################################################################################
 

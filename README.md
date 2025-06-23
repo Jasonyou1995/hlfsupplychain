@@ -6,7 +6,7 @@
 [![Go](https://img.shields.io/badge/Go-1.19+-blue)](https://golang.org/)
 [![Docker](https://img.shields.io/badge/Docker-20.10+-blue)](https://www.docker.com/)
 
-A production-ready, enterprise-grade supply chain management platform built on Hyperledger Fabric with comprehensive security features, real-time traceability, and multi-organization support.
+A supply chain management platform built on Hyperledger Fabric with comprehensive security features, real-time traceability, and multi-organization support.
 
 ## 🚀 Key Features
 
@@ -34,7 +34,7 @@ A production-ready, enterprise-grade supply chain management platform built on H
 - **ES Modules**: Modern JavaScript with full ES module support
 - **Docker Compose**: Container orchestration for easy deployment
 - **Gateway API**: Latest Fabric Gateway SDK implementation
-- **RESTful APIs**: Production-ready REST API with OpenAPI documentation
+- **RESTful APIs**: REST API with OpenAPI documentation
 - **Microservices Ready**: Scalable architecture for enterprise deployment
 
 ## 📋 Prerequisites
@@ -202,7 +202,7 @@ curl -X GET http://localhost:3000/health
 # Expected response:
 # {
 #   "status": "healthy",
-#   "timestamp": "2024-12-23T10:30:00.000Z",
+#   "timestamp": "2025-12-23T10:30:00.000Z",
 #   "version": "1.0.0"
 # }
 ```
@@ -282,7 +282,7 @@ curl -X GET http://localhost:3000/api/blockchain/products/TEST001 \
 #   "manufacturerId": "MFG001",
 #   "batchId": "BATCH001",
 #   "status": "created",
-#   "createdAt": "2024-12-23T10:30:00.000Z",
+#   "createdAt": "2025-12-23T10:30:00.000Z",
 #   "trackingEvents": [],
 #   "qualityMetrics": {},
 #   "certifications": []

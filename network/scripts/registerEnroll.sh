@@ -3,7 +3,7 @@
 # Enterprise Hyperledger Fabric Supply Chain Platform v2.5+
 # Certificate Registration and Enrollment Script
 # Author: Supply Chain Platform Team
-# Last Modified: December 16, 2024
+# Last Modified: December 16, 2025
 # License: Apache-2.0
 
 set -e
