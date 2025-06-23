@@ -1,6 +1,6 @@
 ---
-description: Guidelines for creating and maintaining Roo Code rules to ensure consistency and effectiveness.
-globs: .roo/rules/*.md
+description: Guidelines for creating and maintaining VS Code rules to ensure consistency and effectiveness.
+applyTo: ".github/instructions/*.md"
 alwaysApply: true
 ---
 
@@ -19,7 +19,7 @@ alwaysApply: true
 
 - **File References:**
   - Use `[filename](mdc:path/to/file)` ([filename](mdc:filename)) to reference files
-  - Example: [prisma.md](.roo/rules/prisma.md) for rule references
+  - Example: [prisma.md](.github/instructions/prisma.md) for rule references
   - Example: [schema.prisma](mdc:prisma/schema.prisma) for code references
 
 - **Code Examples:**

@@ -1,6 +1,6 @@
 ---
-description: Guidelines for continuously improving Roo Code rules based on emerging code patterns and best practices.
-globs: **/*
+description: Guidelines for continuously improving VS Code rules based on emerging code patterns and best practices.
+applyTo: "**/*"
 alwaysApply: true
 ---
 
@@ -39,7 +39,7 @@ alwaysApply: true
     where: { status: 'ACTIVE' }
   });
   
-  // Consider adding to [prisma.md](.roo/rules/prisma.md):
+  // Consider adding to [prisma.md](.github/instructions/prisma.md):
   // - Standard select fields
   // - Common where conditions
   // - Performance optimization patterns
@@ -69,4 +69,4 @@ alwaysApply: true
   - Update references to external docs
   - Maintain links between related rules
   - Document breaking changes
-Follow [roo_rules.md](.roo/rules/roo_rules.md) for proper rule formatting and structure.
+Follow [vscode_rules.md](.github/instructions/vscode_rules.md) for proper rule formatting and structure.

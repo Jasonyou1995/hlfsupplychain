@@ -33,7 +33,7 @@ All your standard command executions should operate on the user's current task c
 For new projects or when users are getting started, operate within the `master` tag context:
 
 -   Start new projects by running `initialize_project` tool / `task-master init` or `parse_prd` / `task-master parse-prd --input='<prd-file.txt>'` (see @`taskmaster.md`) to generate initial tasks.json with tagged structure
--   Configure rule sets during initialization with `--rules` flag (e.g., `task-master init --rules roo,windsurf`) or manage them later with `task-master rules add/remove` commands  
+-   Configure rule sets during initialization with `--rules` flag (e.g., `task-master init --rules windsurf,windsurf`) or manage them later with `task-master rules add/remove` commands  
 -   Begin coding sessions with `get_tasks` / `task-master list` (see @`taskmaster.md`) to see current tasks, status, and IDs
 -   Determine the next task to work on using `next_task` / `task-master next` (see @`taskmaster.md`)
 -   Analyze task complexity with `analyze_project_complexity` / `task-master analyze-complexity --research` (see @`taskmaster.md`) before breaking down tasks
@@ -193,7 +193,7 @@ Actions:
 Taskmaster offers two primary ways to interact:
 
 1.  **MCP Server (Recommended for Integrated Tools)**:
-    - For AI agents and integrated development environments (like Roo Code), interacting via the **MCP server is the preferred method**.
+    - For AI agents and integrated development environments (like Windsurf), interacting via the **MCP server is the preferred method**.
     - The MCP server exposes Taskmaster functionality through a set of tools (e.g., `get_tasks`, `add_subtask`).
     - This method offers better performance, structured data exchange, and richer error handling compared to CLI parsing.
     - Refer to @`mcp.md` for details on the MCP architecture and available tools.
@@ -283,7 +283,7 @@ Taskmaster configuration is managed through two main mechanisms:
 2.  **Environment Variables (`.env` / `mcp.json`):**
     *   Used **only** for sensitive API keys and specific endpoint URLs.
     *   Place API keys (one per provider) in a `.env` file in the project root for CLI usage.
-    *   For MCP/Roo Code integration, configure these keys in the `env` section of `.roo/mcp.json`.
+    *   For MCP/Windsurf integration, configure these keys in the `env` section of `.windsurf/mcp.json`.
     *   Available keys/variables: See `assets/env.example` or the Configuration section in the command reference (previously linked to `taskmaster.md`).
 
 3.  **`.taskmaster/state.json` File (Tagged System State):**
@@ -292,19 +292,19 @@ Taskmaster configuration is managed through two main mechanisms:
     *   Contains: `currentTag`, `lastSwitched`, `migrationNoticeShown`.
 
 **Important:** Non-API key settings (like model selections, `MAX_TOKENS`, `TASKMASTER_LOG_LEVEL`) are **no longer configured via environment variables**. Use the `task-master models` command (or `--setup` for interactive configuration) or the `models` MCP tool.
-**If AI commands FAIL in MCP** verify that the API key for the selected provider is present in the `env` section of `.roo/mcp.json`.
+**If AI commands FAIL in MCP** verify that the API key for the selected provider is present in the `env` section of `.windsurf/mcp.json`.
 **If AI commands FAIL in CLI** verify that the API key for the selected provider is present in the `.env` file in the root of the project.
 
 ## Rules Management
 
 Taskmaster supports multiple AI coding assistant rule sets that can be configured during project initialization or managed afterward:
 
-- **Available Profiles**: Claude Code, Cline, Codex, Roo Code, Roo Code, Trae, Windsurf (claude, cline, codex, roo, roo, trae, windsurf)
-- **During Initialization**: Use `task-master init --rules roo,windsurf` to specify which rule sets to include
+- **Available Profiles**: Claude Code, Cline, Codex, Windsurf, Roo Code, Trae, Windsurf (claude, cline, codex, windsurf, roo, trae, windsurf)
+- **During Initialization**: Use `task-master init --rules windsurf,windsurf` to specify which rule sets to include
 - **After Initialization**: Use `task-master rules add <profiles>` or `task-master rules remove <profiles>` to manage rule sets
 - **Interactive Setup**: Use `task-master rules setup` to launch an interactive prompt for selecting rule profiles
 - **Default Behavior**: If no `--rules` flag is specified during initialization, all available rule profiles are included
-- **Rule Structure**: Each profile creates its own directory (e.g., `.roo/rules`, `.roo/rules`) with appropriate configuration files
+- **Rule Structure**: Each profile creates its own directory (e.g., `.windsurf/rules`, `.roo/rules`) with appropriate configuration files
 
 ## Determining the Next Task
 

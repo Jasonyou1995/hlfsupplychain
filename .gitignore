@@ -33,3 +33,7 @@ node_modules/
 .openai/
 cursor-*.log
 taskmaster-*.log
+
+# Task files
+# tasks.json
+# tasks/ 

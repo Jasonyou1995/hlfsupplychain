@@ -1,5 +1,5 @@
 ---
-description: Guidelines for continuously improving Roo Code rules based on emerging code patterns and best practices.
+description: Guidelines for continuously improving Cline rules based on emerging code patterns and best practices.
 globs: **/*
 alwaysApply: true
 ---
@@ -39,7 +39,7 @@ alwaysApply: true
     where: { status: 'ACTIVE' }
   });
   
-  // Consider adding to [prisma.md](.roo/rules/prisma.md):
+  // Consider adding to [prisma.md](.clinerules/prisma.md):
   // - Standard select fields
   // - Common where conditions
   // - Performance optimization patterns
@@ -69,4 +69,4 @@ alwaysApply: true
   - Update references to external docs
   - Maintain links between related rules
   - Document breaking changes
-Follow [roo_rules.md](.roo/rules/roo_rules.md) for proper rule formatting and structure.
+Follow [cline_rules.md](.clinerules/cline_rules.md) for proper rule formatting and structure.
