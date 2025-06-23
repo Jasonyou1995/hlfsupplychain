@@ -9,6 +9,14 @@ import (
 	"github.com/hyperledger/fabric-contract-api-go/contractapi"
 )
 
+const (
+	ProductCollection   = "productPrivateData"
+	EventProductCreated = "ProductCreated"
+	EventProductUpdated = "ProductUpdated"
+	EventTrackingAdded  = "TrackingEventAdded"
+	EventProductAlert   = "ProductAlert"
+)
+
 // SupplyChainContract represents the contract for supply chain management
 type SupplyChainContract struct {
 	contractapi.Contract
@@ -173,7 +181,6 @@ func (s *SupplyChainContract) InitLedger(ctx contractapi.TransactionContextInter
 
 // CreateProduct creates a new product in the supply chain
 func (s *SupplyChainContract) CreateProduct(ctx contractapi.TransactionContextInterface, id string, name string, description string, manufacturerID string, batchID string) error {
-	// Check if product already exists
 	exists, err := s.ProductExists(ctx, id)
 	if err != nil {
 		return err
@@ -182,19 +189,16 @@ func (s *SupplyChainContract) CreateProduct(ctx contractapi.TransactionContextIn
 		return fmt.Errorf("product %s already exists", id)
 	}
 
-	// Validate input
 	if id == "" || name == "" || manufacturerID == "" {
 		return fmt.Errorf("invalid input: id, name, and manufacturerID are required")
 	}
 
-	// Get transaction timestamp
 	txTimestamp, err := ctx.GetStub().GetTxTimestamp()
 	if err != nil {
 		return err
 	}
 	timestamp := time.Unix(txTimestamp.Seconds, int64(txTimestamp.Nanos))
 
-	// Create initial tracking event
 	initialEvent := TrackingEvent{
 		ID:          fmt.Sprintf("%s_CREATE", id),
 		ProductID:   id,
@@ -206,7 +210,7 @@ func (s *SupplyChainContract) CreateProduct(ctx contractapi.TransactionContextIn
 		Data:        map[string]string{"creation_method": "automated"},
 		Temperature: 22.0,
 		Humidity:    45.0,
-		Verified:    false, // Will be verified by quality control
+		Verified:    false,
 	}
 
 	product := Product{
@@ -231,10 +235,14 @@ func (s *SupplyChainContract) CreateProduct(ctx contractapi.TransactionContextIn
 		return err
 	}
 
-	// Set endorsement policy for this product (requires manufacturer + one other org)
 	err = ctx.GetStub().SetStateValidationParameter(id, []byte("OR('ManufacturerMSP.member', AND('SupplierMSP.member', 'LogisticsMSP.member'))"))
 	if err != nil {
 		return fmt.Errorf("failed to set state validation parameter: %v", err)
+	}
+
+	err = ctx.GetStub().SetEvent(EventProductCreated, productJSON)
+	if err != nil {
+		return fmt.Errorf("failed to emit event: %v", err)
 	}
 
 	return ctx.GetStub().PutState(id, productJSON)
@@ -266,20 +274,17 @@ func (s *SupplyChainContract) UpdateProduct(ctx contractapi.TransactionContextIn
 		return err
 	}
 
-	// Get transaction details
 	txTimestamp, err := ctx.GetStub().GetTxTimestamp()
 	if err != nil {
 		return err
 	}
 	timestamp := time.Unix(txTimestamp.Seconds, int64(txTimestamp.Nanos))
 
-	// Get client identity
 	clientID, err := s.GetSubmittingClientIdentity(ctx)
 	if err != nil {
 		return err
 	}
 
-	// Create tracking event
 	updateEvent := TrackingEvent{
 		ID:          fmt.Sprintf("%s_UPDATE_%d", id, timestamp.Unix()),
 		ProductID:   id,
@@ -294,7 +299,6 @@ func (s *SupplyChainContract) UpdateProduct(ctx contractapi.TransactionContextIn
 		Verified:    true,
 	}
 
-	// Update product
 	product.Status = status
 	product.CurrentLocation = location
 	product.Temperature = temperature
@@ -307,8 +311,7 @@ func (s *SupplyChainContract) UpdateProduct(ctx contractapi.TransactionContextIn
 		return err
 	}
 
-	// Emit event for off-chain applications
-	err = ctx.GetStub().SetEvent("ProductUpdated", productJSON)
+	err = ctx.GetStub().SetEvent(EventProductUpdated, productJSON)
 	if err != nil {
 		return fmt.Errorf("failed to emit event: %v", err)
 	}
@@ -323,20 +326,17 @@ func (s *SupplyChainContract) AddTrackingEvent(ctx contractapi.TransactionContex
 		return err
 	}
 
-	// Get transaction details
 	txTimestamp, err := ctx.GetStub().GetTxTimestamp()
 	if err != nil {
 		return err
 	}
 	timestamp := time.Unix(txTimestamp.Seconds, int64(txTimestamp.Nanos))
 
-	// Get client identity
 	clientID, err := s.GetSubmittingClientIdentity(ctx)
 	if err != nil {
 		return err
 	}
 
-	// Parse additional data
 	var eventData map[string]string
 	if data != "" {
 		err = json.Unmarshal([]byte(data), &eventData)
@@ -347,7 +347,6 @@ func (s *SupplyChainContract) AddTrackingEvent(ctx contractapi.TransactionContex
 		eventData = make(map[string]string)
 	}
 
-	// Create tracking event
 	trackingEvent := TrackingEvent{
 		ID:          fmt.Sprintf("%s_%s_%d", productID, eventType, timestamp.Unix()),
 		ProductID:   productID,
@@ -355,14 +354,13 @@ func (s *SupplyChainContract) AddTrackingEvent(ctx contractapi.TransactionContex
 		Timestamp:   timestamp,
 		Location:    location,
 		ActorID:     clientID,
-		ActorType:   "unknown", // Could be enhanced to detect org type
+		ActorType:   "unknown",
 		Data:        eventData,
 		Temperature: product.Temperature,
 		Humidity:    product.Humidity,
-		Verified:    false, // Requires verification
+		Verified:    false,
 	}
 
-	// Add event to product
 	product.SupplyChainSteps = append(product.SupplyChainSteps, trackingEvent)
 	product.UpdatedAt = timestamp
 
@@ -371,9 +369,8 @@ func (s *SupplyChainContract) AddTrackingEvent(ctx contractapi.TransactionContex
 		return err
 	}
 
-	// Emit event
 	eventJSON, _ := json.Marshal(trackingEvent)
-	err = ctx.GetStub().SetEvent("TrackingEventAdded", eventJSON)
+	err = ctx.GetStub().SetEvent(EventTrackingAdded, eventJSON)
 	if err != nil {
 		return fmt.Errorf("failed to emit event: %v", err)
 	}
@@ -483,7 +480,6 @@ func (s *SupplyChainContract) GetProductHistory(ctx contractapi.TransactionConte
 
 // CreatePrivateProductData creates private data for a product
 func (s *SupplyChainContract) CreatePrivateProductData(ctx contractapi.TransactionContextInterface, collection string) error {
-	// Get private data from transient map
 	transientMap, err := ctx.GetStub().GetTransient()
 	if err != nil {
 		return fmt.Errorf("error getting transient: %v", err)
@@ -500,7 +496,6 @@ func (s *SupplyChainContract) CreatePrivateProductData(ctx contractapi.Transacti
 		return fmt.Errorf("failed to unmarshal private data: %v", err)
 	}
 
-	// Verify product exists
 	exists, err := s.ProductExists(ctx, privateData.ProductID)
 	if err != nil {
 		return err
@@ -509,7 +504,6 @@ func (s *SupplyChainContract) CreatePrivateProductData(ctx contractapi.Transacti
 		return fmt.Errorf("product %s does not exist", privateData.ProductID)
 	}
 
-	// Store private data
 	return ctx.GetStub().PutPrivateData(collection, privateData.ProductID, privateDataJSON)
 }
 
@@ -573,7 +567,6 @@ func (s *SupplyChainContract) GetSubmittingClientIdentity(ctx contractapi.Transa
 
 // EmitProductAlert emits an alert for a product (e.g., quality issue, recall)
 func (s *SupplyChainContract) EmitProductAlert(ctx contractapi.TransactionContextInterface, productID string, alertType string, message string) error {
-	// Verify product exists
 	exists, err := s.ProductExists(ctx, productID)
 	if err != nil {
 		return err
@@ -582,7 +575,6 @@ func (s *SupplyChainContract) EmitProductAlert(ctx contractapi.TransactionContex
 		return fmt.Errorf("product %s does not exist", productID)
 	}
 
-	// Create alert payload
 	alert := map[string]interface{}{
 		"productId": productID,
 		"alertType": alertType,
@@ -596,8 +588,7 @@ func (s *SupplyChainContract) EmitProductAlert(ctx contractapi.TransactionContex
 		return err
 	}
 
-	// Emit event
-	return ctx.GetStub().SetEvent("ProductAlert", alertJSON)
+	return ctx.GetStub().SetEvent(EventProductAlert, alertJSON)
 }
 
 func main() {
