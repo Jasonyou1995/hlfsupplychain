@@ -42,11 +42,11 @@ echo "🏗️  Starting development deployment..."
 echo "    (This will take 2-3 minutes)"
 echo ""
 
-if [ -f "deploy.js" ]; then
-    chmod +x deploy.js
-    ./deploy.js --mode=dev --force
+if [ -f "src/deploy.js" ]; then
+    chmod +x src/deploy.js
+    node src/deploy.js --mode=dev --force
 else
-    echo "❌ deploy.js not found. Please run this from the project root directory."
+    echo "❌ src/deploy.js not found. Please run this from the project root directory."
     exit 1
 fi
 

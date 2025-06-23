@@ -18,60 +18,41 @@
  *   ./deploy.js --destroy          # Clean removal
  */
 
+import { program } from 'commander';
 import { spawn, exec } from 'child_process';
 import { promises as fs } from 'fs';
 import { promisify } from 'util';
 import path from 'path';
 import readline from 'readline';
 
+// Import our modular components
+import { ConfigurationManager, DEPLOYMENT_MODES } from './config.js';
+import { logger } from './utils/logger.js';
+import { progressTracker } from './utils/progress.js';
+import EnvironmentValidator from './modules/environment.js';
+
 const execAsync = promisify(exec);
 
-// Deployment configuration
-const DEPLOYMENT_MODES = {
-  dev: {
-    name: 'Development',
-    description: 'Quick setup for local development with minimal organizations',
-    orgs: ['manufacturer', 'supplier'],
-    peers: 1,
-    orderers: 1,
-    persistence: false,
-    monitoring: false,
-    ssl: false
-  },
-  staging: {
-    name: 'Staging',
-    description: 'Multi-org setup for testing with monitoring',
-    orgs: ['manufacturer', 'supplier', 'logistics', 'retailer'],
-    peers: 2,
-    orderers: 2,
-    persistence: true,
-    monitoring: true,
-    ssl: true
-  },
-  prod: {
-    name: 'Production',
-    description: 'Full enterprise deployment with all organizations',
-    orgs: ['manufacturer', 'supplier', 'logistics', 'retailer', 'auditor'],
-    peers: 2,
-    orderers: 3,
-    persistence: true,
-    monitoring: true,
-    ssl: true,
-    backup: true
-  }
-};
+// Deployment configuration is now imported from ./config.js
 
 class DeploymentOrchestrator {
   constructor(options = {}) {
+    this.options = options;
     this.mode = options.mode || null;
     this.interactive = !options.mode;
     this.force = options.force || false;
     this.verbose = options.verbose || false;
+    this.verifyOnly = options.verify || false;
+    this.destroyOnly = options.destroy || false;
+    
+    // Initialize components
+    this.configManager = new ConfigurationManager();
+    this.envValidator = new EnvironmentValidator();
     
     this.status = {
       phase: 'initializing',
       progress: 0,
-      totalSteps: 0,
+      totalSteps: 8,
       currentStep: 0,
       startTime: Date.now(),
       errors: [],

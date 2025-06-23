@@ -1,0 +1,61 @@
+{
+  "name": "hlf-supply-chain-deployment",
+  "version": "1.0.0",
+  "description": "Hyperledger Fabric Supply Chain Platform - Deployment Orchestrator",
+  "type": "module",
+  "main": "src/deploy.js",
+  "bin": {
+    "deploy": "./src/deploy.js"
+  },
+  "scripts": {
+    "deploy": "node src/deploy.js",
+    "deploy:dev": "node src/deploy.js --mode=dev",
+    "deploy:staging": "node src/deploy.js --mode=staging",
+    "deploy:prod": "node src/deploy.js --mode=prod",
+    "verify": "node src/deploy.js --verify",
+    "destroy": "node src/deploy.js --destroy",
+    "quick-start": "./quick-start.sh",
+    "test": "echo \"Tests not implemented yet\" && exit 1",
+    "lint": "eslint src/**/*.js",
+    "lint:fix": "eslint src/**/*.js --fix"
+  },
+  "keywords": [
+    "hyperledger-fabric",
+    "blockchain",
+    "deployment",
+    "orchestration",
+    "supply-chain",
+    "docker",
+    "enterprise"
+  ],
+  "author": "Supply Chain Platform Team",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "commander": "^9.0.0",
+    "chalk": "^5.0.0",
+    "cli-progress": "^3.11.0",
+    "dockerode": "^3.3.1",
+    "js-yaml": "^4.1.0",
+    "winston": "^3.11.0",
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.56.0",
+    "eslint-config-standard": "^17.1.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^6.1.1"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/enterprise-supply-chain/hlf-supply-chain-platform.git"
+  },
+  "bugs": {
+    "url": "https://github.com/enterprise-supply-chain/hlf-supply-chain-platform/issues"
+  },
+  "homepage": "https://github.com/enterprise-supply-chain/hlf-supply-chain-platform#readme"
+} 
